@@ -61,8 +61,13 @@
       </div>
     </div>
   </body>
-  <script type="module">
-    import ACCESS_KEY from "./config.js";
-    document.querySelector('[name="access_key"]').value = ACCESS_KEY;
+  <script>
+    // Fetch the access_key from the lambda function
+    fetch("/.netlify/functions/getAccessKey")
+      .then((response) => response.text())
+      .then((key) => {
+        document.querySelector('[name="access_key"]').value = key;
+      })
+      .catch((error) => console.error("Error fetching access key:", error));
   </script>
 </html>
