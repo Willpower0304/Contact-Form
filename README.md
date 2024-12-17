@@ -101,6 +101,9 @@ no es necesario usar Netlify para alojar tu pagina web, pero las intrucciones se
 1. Abre la consola del navegador (**F12 > Network**) y verifica que la solicitud `/.netlify/functions/getAccessKey` devuelve la clave correcta.
 2. Envía el formulario con datos de prueba y confirma que los envíos se completan exitosamente en Web3Forms.
 
+## Prewiev
+![image](https://github.com/user-attachments/assets/40d18198-370f-4918-be1d-57222e539cb5)
+
 ## Contribuciones
 
 Siéntete libre de bifurcar este repositorio y enviar solicitudes de mejora o nuevas funcionalidades.
