@@ -32,32 +32,74 @@ El formulario incluye los siguientes campos:
    git clone https://github.com/tuUsuario/Contact-Form.git
    ```
 
-2. crea un archivo `config.js` para tener tu clave de `web3forms.com` protegida de forma local. y crea las siguientes lineas de codigo:
-    ```
-    const ACCESS_KEY = "access_key";
-    export default ACCESS_KEY;
-    ```
+## Requisitos Previos
 
-remplaza el `access_key` con tu API_KEY que te dio `web3forms.com` al registrate.
+1. Tener una cuenta en [Netlify](https://netlify.com).
+2. La clave de Web3Forms (`ACCESS_KEY`) proporcionada por [Web3Forms](https://web3forms.com/).
+3. Un proyecto alojado en Netlify.
 
-3. si tienes planeado subir esto a un servidor o un repositorio de `github` Asegúrate de que `config.js` esté en en un archivo `.gitignore` para que no se suba al repositorio
-    ```
-    config.js
-    ```
+## Configuración de la Variable de Entorno en Netlify
 
-### Puntos Clave
+1. Ve al **panel de control de Netlify**.
+2. Selecciona tu sitio y dirígete a **Site settings > Environment Variables**.
+3. Agrega la clave:
+   - **Key**: `WEB3FORMS_ACCESS_KEY`
+   - **Value**: Tu clave de Web3Forms (ejemplo: `abc123xyz456`).
+4. Guarda los cambios.
 
-- Reemplaza `ACCESS_KEY` con tu clave API de Web3Forms.
-- Asegúrate de que todos los campos requeridos (`name`, `email`, `message`) estén correctamente validados.
+## Estructura del Proyecto
 
+La función Lambda debe colocarse en el directorio `netlify/functions` dentro del proyecto.
+
+### Estructura de Archivos:
+```plaintext
+project-root/
+│
+├── netlify/
+│   └── functions/
+│       └── getAccessKey.js
+│
+├── index.html
+└── README.md
+```
+
+## Código de la Función Lambda
+
+Crea el archivo `getAccessKey.js` dentro de `netlify/functions` y agrega el siguiente código:
+
+```javascript
+exports.handler = async () => {
+    return {
+        statusCode: 200,
+        body: process.env.WEB3FORMS_ACCESS_KEY,
+    };
+};
+```
+
+### Explicación del Código:
+- `process.env.WEB3FORMS_ACCESS_KEY`: Recupera la clave desde las variables de entorno configuradas en Netlify.
+- `statusCode: 200`: Devuelve una respuesta exitosa.
+- `body`: Contiene la clave recuperada.
+
+### Explicación del Script:
+1. **fetch**: Llama a la función Lambda en `/getAccessKey`.
+2. **response.text()**: Recupera la clave como texto.
+3. La clave se asigna dinámicamente al campo oculto `access_key` del formulario.
+
+## Despliegue en Netlify
+
+1. Asegúrate de subir la estructura de archivos al repositorio.
+2. Netlify detectará automáticamente la función Lambda en el directorio `netlify/functions`.
+3. Despliega el proyecto en Netlify.
+4. Prueba el formulario para asegurarte de que funciona correctamente.
+
+### Nota:
+no es necesario usar Netlify para alojar tu pagina web, pero las intrucciones serian diferentes.
 
 ## Pruebas
 
-Para probar el formulario:
-
-1. Completa los campos con datos de ejemplo.
-2. Haz clic en el botón "Enviar".
-3. Verifica el envío revisando el correo electrónico configurado en tu cuenta de Web3Forms.
+1. Abre la consola del navegador (**F12 > Network**) y verifica que la solicitud `/.netlify/functions/getAccessKey` devuelve la clave correcta.
+2. Envía el formulario con datos de prueba y confirma que los envíos se completan exitosamente en Web3Forms.
 
 ## Contribuciones
 
